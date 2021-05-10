@@ -151,7 +151,11 @@ export class Label extends OverlayViewSafe {
   }
 
   draw() {
-    const coordinates = this.getProjection().fromLatLngToDivPixel(
+    const projection = this.getProjection();
+    if (projection === undefined) {
+      return;
+    }
+    const coordinates = projection.fromLatLngToDivPixel(
       this.position
     );
     const x = Math.round(coordinates.x + this.anchor.x);
