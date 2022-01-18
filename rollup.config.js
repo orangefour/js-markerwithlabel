@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import babel from "rollup-plugin-babel";
-import commonjs from "rollup-plugin-commonjs";
+import { babel } from "@rollup/plugin-babel";
+import commonjs from "@rollup/plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
-import typescript from "rollup-plugin-typescript2";
+import typescript from "@rollup/plugin-typescript";
 
 const babelOptions = {
   extensions: [".js", ".ts"],
@@ -29,7 +29,8 @@ export default [
   {
     input: "src/index.ts",
     plugins: [
-      typescript(),
+      typescript({ tsconfig: "./tsconfig.json", declarationDir: "./" }),
+
       commonjs(),
       babel(babelOptions),
       terser(terserOptions),
@@ -39,35 +40,38 @@ export default [
         file: "dist/index.umd.js",
         format: "umd",
         sourcemap: true,
-        exports: "default",
-        name: "MarkerWithLabel",
+        name: "markerWithLabel",
       },
       {
         file: "dist/index.min.js",
         format: "iife",
         sourcemap: true,
-        exports: "default",
-        name: "MarkerWithLabel",
+        name: "markerWithLabel",
       },
     ],
   },
   {
     input: "src/index.ts",
-    plugins: [typescript(), commonjs()],
+    plugins: [
+      typescript({ tsconfig: "./tsconfig.json", declarationDir: "./" }),
+
+      commonjs(),
+    ],
     output: {
       file: "dist/index.dev.js",
       format: "iife",
-      name: "MarkerWithLabel",
+      name: "markerWithLabel",
     },
   },
   {
     input: "src/index.ts",
-    plugins: [typescript()],
+    plugins: [
+      typescript({ tsconfig: "./tsconfig.json", declarationDir: "./" }),
+    ],
     output: {
       file: "dist/index.esm.js",
       format: "esm",
       sourcemap: true,
-      name: "MarkerWithLabel",
     },
   },
 ];
