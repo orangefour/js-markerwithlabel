@@ -127,6 +127,12 @@ class Label extends OverlayViewSafe {
             this.setMap(map);
         }
     }
+    get element() {
+        return this.labelDiv;
+    }
+    get content() {
+        return this.labelDiv.innerHTML;
+    }
     set content(content) {
         if (typeof content === "string") {
             this.labelDiv.innerHTML = content;
@@ -191,7 +197,11 @@ class Label extends OverlayViewSafe {
         this.getPanes().overlayMouseTarget.appendChild(this.eventDiv);
     }
     draw() {
-        const coordinates = this.getProjection().fromLatLngToDivPixel(this.position);
+        const projection = this.getProjection();
+        if (projection === undefined) {
+            return;
+        }
+        const coordinates = projection.fromLatLngToDivPixel(this.position);
         const x = Math.round(coordinates.x + this.anchor.x);
         const y = Math.round(coordinates.y + this.anchor.y);
         this.labelDiv.style.left = `${x}px`;
@@ -319,6 +329,22 @@ class MarkerWithLabel extends MarkerSafe {
     }
     get isInteractive() {
         return this.getClickable() || this.getDraggable();
+    }
+    /**
+     * Gets label element.
+     */
+    get labelElement() {
+        return this.label.element;
+    }
+    /**
+     * Gets label `innerHTML`. See {@link Marker.labelElement} for
+     * accessing the HTMLElement instead.
+     */
+    get labelContent() {
+        return this.label.content;
+    }
+    set labelContent(content) {
+        this.label.content = content;
     }
     get labelClass() {
         return this.label.className;
@@ -485,21 +511,5 @@ class MarkerWithLabel extends MarkerSafe {
     }
 }
 
-/**
- * Copyright 2020 Google LLC. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-export default MarkerWithLabel;
+export { MarkerWithLabel };
 //# sourceMappingURL=index.esm.js.map

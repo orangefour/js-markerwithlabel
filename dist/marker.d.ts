@@ -33,6 +33,16 @@ export declare class MarkerWithLabel extends MarkerSafe {
     private mouseOutTimeout;
     constructor(options: MarkerWithLabelOptions);
     get isInteractive(): boolean;
+    /**
+     * Gets label element.
+     */
+    get labelElement(): HTMLElement;
+    /**
+     * Gets label `innerHTML`. See {@link Marker.labelElement} for
+     * accessing the HTMLElement instead.
+     */
+    get labelContent(): string;
+    set labelContent(content: string | HTMLElement);
     get labelClass(): string;
     set labelClass(className: string);
     setMap(map: google.maps.Map | google.maps.StreetViewPanorama | null): void;
